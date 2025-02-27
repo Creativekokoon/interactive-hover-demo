@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive Hover Demo</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            padding: 50px;
+        }
+        .container {
+            position: relative;
+            display: inline-block;
+        }
+        svg {
+            width: 200px;
+            cursor: pointer;
+        }
+        .hover-area {
+            transition: fill 0.2s ease;
+        }
+        .hover-text {
+            margin-top: 20px;
+            font-size: 18px;
+            color: #333;
+            opacity: 0;
+        }
+    </style>
+</head>
+<body>
+
+<h2>Hover over the sections to see text</h2>
+<div class="container">
+    <svg viewBox="0 0 100 100">
+        <!-- Four sections of the circle with gradient shades of blue -->
+        <path class="hover-area" d="M50,10 A40,40 0 0,1 90,50 L50,50 Z" data-text="This section represents creative thinking and ideas." fill="#1E90FF" data-light="#A0C4FF"/>
+        <path class="hover-area" d="M50,10 A40,40 0 0,0 10,50 L50,50 Z" data-text="This section is associated with problem-solving and logic." fill="#4682B4" data-light="#A8C8E6"/>
+        <path class="hover-area" d="M50,50 L90,50 A40,40 0 0,1 50,90 Z" data-text="This section relates to emotions and interpersonal skills." fill="#87CEFA" data-light="#C0E8FF"/>
+        <path class="hover-area" d="M50,50 L10,50 A40,40 0 0,0 50,90 Z" data-text="This section involves memory retention and knowledge." fill="#00BFFF" data-light="#80DFFF"/>
+    </svg>
+    <p class="hover-text" id="hover-text">Hover over a section to reveal more information.</p>
+</div>
+
+<script>
+    document.querySelectorAll('.hover-area').forEach(element => {
+        element.addEventListener('mouseenter', function () {
+            gsap.to("#hover-text", { opacity: 1, duration: 0.2 });
+            document.getElementById('hover-text').textContent = this.getAttribute('data-text');
+            document.querySelectorAll('.hover-area').forEach(other => {
+                if (other !== element) {
+                    gsap.to(other, { fill: other.getAttribute('data-light'), duration: 0.2 });
+                }
+            });
+        });
+        
+        element.addEventListener('mouseleave', function () {
+            gsap.to("#hover-text", { opacity: 0, duration: 0.2 });
+            document.querySelectorAll('.hover-area').forEach(other => {
+                gsap.to(other, { fill: other.getAttribute('fill'), duration: 0.2 });
+            });
+        });
+    });
+</script>
+
+</body>
+</html>
